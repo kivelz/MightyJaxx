@@ -6,7 +6,7 @@ data: {}
 };
 
 const unsplashReducer = (state = initialState, action) => {
-switch(action.type) {
+    switch(action.type) {
         case GET_DATA_FROM_UNSPLASH:
         return {
         ...state,
