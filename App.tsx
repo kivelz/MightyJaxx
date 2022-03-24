@@ -1,57 +1,39 @@
-import { Alert, Text, View } from 'react-native'
-import React, { Component } from 'react'
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { getUnsplashData } from './redux/action';
+import React from "react";
+import { createAppContainer } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
+  
+import HomeScreen from "../Coding-Challenge-for-Mobile-Engineers/app/view/HomeScreen";
+import { configureStore } from "./store/configureStore";
 
+const store = configureStore();
 
-interface IProps {
-  getUnsplashData: () =>void
-  data: any
-}
-interface IState {
-
-}
-
-export class App extends Component<IProps,IState> {
-  /**
-   *
-   */
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      
-    }
-    
-  }
-  componentDidMount() {
-    this.props.getUnsplashData()
+const AppNavigator = createStackNavigator(
+  {
+    Gallery: HomeScreen,
    
-  }
-
-
-  render() {
-    console.log('state', this.props.data)
-    return (
-      <View style={{flex: 1, backgroundColor: '#000'}}>
-        <Text>App</Text>
-      </View>
-    )
-  }
-}
-
-const mapStateToProps = (state: any) => {
-  return {
-    data: state
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) =>
-  bindActionCreators(
-      {
-        getUnsplashData
+  },
+  {
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: "#fff",
       },
-      dispatch,
+      headerTitleStyle: {
+        fontWeight: "bold",
+        color: "#000",
+        fontSize: 24,
+      },
+      headerTintColor: "#FFF",
+    },
+  },
+ 
+);
+  
+const Navigator = createAppContainer(AppNavigator);
+  
+export default function App() {
+  return (
+    <Navigator>
+      <HomeScreen />
+    </Navigator>
   );
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+}
