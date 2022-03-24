@@ -14,5 +14,11 @@ const RNRedux = () => (
     <App />
   </Provider>
 )
+console.disableYellowBox = true;
 
+if (__DEV__) {
+  console.log();
+} else {
+  console.log = function () {};
+}
 AppRegistry.registerComponent(appName, () => RNRedux);
