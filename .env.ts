@@ -1,8 +1,8 @@
 let globalsettings;
 
 globalsettings = {
-  API_KEY : 'REPLACE_THE_API_KEY',
-  API_SECRET : 'REPLACE_THE_SECRET'
+  API_KEY : '',
+  API_SECRET : ''
 }
 
 export default {
