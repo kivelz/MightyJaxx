@@ -1,8 +1,9 @@
-import { GET_DATA_FROM_UNSPLASH, GET_DATA_FROM_UNSPLASH_SUCCESS, GET_DATA_FROM_UNSPLASH_FAILED,GET_DATA_FROM_UNSPLASH_LIST_END } from '../action';
+import { GET_DATA_FROM_UNSPLASH, GET_DATA_FROM_UNSPLASH_SUCCESS, GET_DATA_FROM_UNSPLASH_FAILED,GET_DATA_FROM_UNSPLASH_LIST_END, PULL_TO_REFRESH } from '../action';
 
 
 const initialState = {
-    data: []
+    data: [],
+    pullToRefresh: false,
 };
 
 const unsplashReducer = (state = initialState, action) => {
@@ -36,7 +37,13 @@ const unsplashReducer = (state = initialState, action) => {
                 isListEnd: true,
                 loading: false, 
                 moreLoading: false
-            }  
+            };
+        case PULL_TO_REFRESH : {
+            return {
+                ...state,
+                pullToRefresh: action.payload
+            }
+        }  
         default:
         return state;
         }

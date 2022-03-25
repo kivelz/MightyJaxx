@@ -1,7 +1,7 @@
 import { Image, Text, View, StyleSheet, RefreshControl, ActivityIndicator } from 'react-native'
 import React, { Component, useEffect, useState } from 'react'
 import { connect } from 'react-redux';
-import { getUnsplashData } from '../../../redux/action';
+import { getUnsplashData, pullToRefresh } from '../../../redux/action';
 import { bindActionCreators } from 'redux';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { FlatList } from 'react-native-gesture-handler';
@@ -13,7 +13,8 @@ interface IProps {
   getUnsplashData: (page: number) => any;
   data: any;
   isListEnd: boolean;
-  loading: boolean
+  loading: boolean;
+  pullToRefresh :(payload: boolean) => void;
 }
 interface IState {
   currentPage: number
@@ -28,8 +29,7 @@ const HomeScreen = (props: IProps) => {
   }
   const renderFooter = () => (
     <View style={{ flex: 1 }} >
-      {props.data.moreLoading && <ActivityIndicator />}
-      {props.isListEnd && <Text>No more Images</Text>}
+      {props.data.moreLoading && <ActivityIndicator />}   
     </View>
   )
 
@@ -42,20 +42,20 @@ const HomeScreen = (props: IProps) => {
       setPage(page + 1)
     }
   }
-  const onRefresh =  () => {
+  const onRefresh = async () => {
+    console.log('paaaage', page)
+   props.pullToRefresh(true)
     setTimeout(async() => {
-      await props.getUnsplashData(page)
+      await props.getUnsplashData(1)
     }, (500));
     if(props.loading) {
+      
       setIsRefreshing(true);
     }
   }
   console.log('propsdata', props.data)
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
-      <View style={{ padding: 10 }}>
-        <Text style={{ fontSize: 16, fontFamily: 'Arial', fontWeight: '500' }}>Total Results: {props.data.length}</Text>
-      </View>
       <FlatList data={props.data}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => <UnsplashView data={item} />}
@@ -68,7 +68,11 @@ const HomeScreen = (props: IProps) => {
           onRefresh={() => onRefresh()}
           />
         }
-      />
+      />{props.data.length == 0 && (
+        <View style={{flex:1, alignSelf:'center'}}>
+           <Text>No data from unsplash</Text> 
+          </View>
+       )}
     </View>
   )
 }
@@ -84,7 +88,8 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) =>
   bindActionCreators(
     {
-      getUnsplashData
+      getUnsplashData,
+      pullToRefresh
     },
     dispatch,
   );
