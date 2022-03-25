@@ -1,5 +1,5 @@
 apply plugin: "com.android.application"
-
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 import com.android.build.OutputFile
 
 /**
@@ -127,7 +127,9 @@ def nativeArchitectures = project.getProperties().get("reactNativeDebugArchitect
 
 android {
     ndkVersion rootProject.ext.ndkVersion
-
+    lintOptions {
+        checkReleaseBuilds false
+    }
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {

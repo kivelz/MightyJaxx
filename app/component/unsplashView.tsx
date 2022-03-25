@@ -1,8 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import { FlatList, Image, RefreshControl, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Image, Platform, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import EvilIcon from 'react-native-vector-icons/EvilIcons';
 
+if (Platform.OS === 'ios') {
+  EvilIcon.loadFont();
+  Ionicons.loadFont();
+}
 interface IProps {
     data: any
 }

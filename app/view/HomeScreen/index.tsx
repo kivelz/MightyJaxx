@@ -1,14 +1,18 @@
-import { Image, Text, View, StyleSheet, RefreshControl, ActivityIndicator } from 'react-native'
+import { Image, Text, View, StyleSheet, RefreshControl, ActivityIndicator, Platform } from 'react-native'
 import React, { Component, useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { getUnsplashData, pullToRefresh } from '../../../redux/action';
 import { bindActionCreators } from 'redux';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { FlatList } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import UnsplashView from '../../component/unsplashView';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import EvilIcon from 'react-native-vector-icons/EvilIcons';
 
-Icon.loadFont();
+if (Platform.OS === 'ios') {
+  EvilIcon.loadFont();
+  Ionicons.loadFont();
+}
 interface IProps {
   getUnsplashData: (page: number) => any;
   data: any;
@@ -60,7 +64,7 @@ const HomeScreen = (props: IProps) => {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => <UnsplashView data={item} />}
         onEndReached={_fetchMoreData}
-        onEndReachedThreshold={0}
+        onEndReachedThreshold={0.2}
         ListFooterComponent={renderFooter}
         refreshControl={
           <RefreshControl
